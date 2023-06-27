@@ -12,6 +12,10 @@ TagManager:
   - key
   - chest
   - flashlight
+  - floor
+  - head
+  - body
+  - pistol
   layers:
   - Default
   - TransparentFX

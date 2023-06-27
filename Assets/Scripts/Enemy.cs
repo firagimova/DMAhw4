@@ -8,16 +8,20 @@ public class Enemy : MonoBehaviour
 {
     private NavMeshAgent navMeshAgent;
     private GameObject player;
+
+    AudioSource audioSource;
     
     Animator anime;
 
     public int hp ;
     public int damage ;
 
-    float attackDis = 3f;
-    float chaseDis = 14f;
+    float attackDis = 5f;
+    float chaseDis = 20f;
+    float distance;
 
-    
+    float attackCooldown = 1.5f;  // The cooldown between each attack
+    float attackTime = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -26,13 +30,15 @@ public class Enemy : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("player");
         anime = GetComponent<Animator>();
 
-        
+        audioSource = GetComponent<AudioSource>();
         
     }
 
     // Update is called once per frame
     void Update()
     {
+        distance =  Vector3.Distance(transform.position, player.transform.position);
+
         Check();
 
         
@@ -43,22 +49,26 @@ public class Enemy : MonoBehaviour
     {
 
 
-        float distance = Vector3.Distance(transform.position, player.transform.position);
-
-
-
         if (distance <= attackDis)
         {
             anime.SetBool("attack", true);
+            navMeshAgent.isStopped = false;
 
-            player.GetComponent<Player>().hp -= damage;
-
-            if (player.GetComponent<Player>().hp <= 0)
+            if (Time.time >= attackTime + attackCooldown)
             {
-                
-                SceneManager.LoadScene(2); // lose scene
+                audioSource.Play();
+                player.GetComponent<Player>().hp -= damage;
+                attackTime = Time.time;
 
+                if (player.GetComponent<Player>().hp <= 0)
+                {
+
+                    SceneManager.LoadScene(2); // lose scene
+
+                }
             }
+
+                
         }
         else if (distance <= chaseDis) 
         {
@@ -69,6 +79,7 @@ public class Enemy : MonoBehaviour
         {
             anime.SetBool("isClose", false);
             anime.SetBool("attack", false);
+            navMeshAgent.isStopped = true;
         }
 
 
@@ -77,7 +88,10 @@ public class Enemy : MonoBehaviour
 
     public void Chase()
     {
+        
+
         anime.SetBool("isClose", true);
+        navMeshAgent.isStopped = false;
         navMeshAgent.SetDestination(player.transform.position);
 
     }
