@@ -49,10 +49,10 @@ public class Enemy : MonoBehaviour
     {
 
 
-        if (distance <= attackDis)
+        if (distance <= attackDis && distance > 2f)
         {
             anime.SetBool("attack", true);
-            navMeshAgent.isStopped = false;
+            navMeshAgent.isStopped = true;
 
             if (Time.time >= attackTime + attackCooldown)
             {
@@ -70,7 +70,7 @@ public class Enemy : MonoBehaviour
 
                 
         }
-        else if (distance <= chaseDis) 
+        else if (distance <= chaseDis && distance > 2f && !anime.GetBool("attack")) 
         {
             Chase();
 
@@ -88,11 +88,13 @@ public class Enemy : MonoBehaviour
 
     public void Chase()
     {
-        
 
-        anime.SetBool("isClose", true);
-        navMeshAgent.isStopped = false;
-        navMeshAgent.SetDestination(player.transform.position);
+        if (distance > 2f)
+        {
+            anime.SetBool("isClose", true);
+            navMeshAgent.isStopped = false;
+            navMeshAgent.SetDestination(player.transform.position);
+        }
 
     }
 

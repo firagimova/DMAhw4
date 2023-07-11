@@ -44,6 +44,10 @@ public class Bullet : MonoBehaviour
         }
         else if (other.gameObject.tag == "head")
         {
+            int hShot = PlayerPrefs.GetInt("headShot");
+            hShot++;
+            PlayerPrefs.SetInt("headShot", hShot);
+
 
             other.gameObject.GetComponentInParent<Enemy>().hp -= 50;
             //other.gameObject.GetComponent<Enemy>().hp -= 50;

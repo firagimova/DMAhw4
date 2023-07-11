@@ -33,12 +33,13 @@ public class Player : MonoBehaviour
 
         rb = GetComponent<Rigidbody>();
         anim.SetBool("isGrounded", true);
-        speed = 10f;
+        speed = 6f;
         jumpForce = 7f;
 
         audioSource = GetComponent<AudioSource>();
 
         PlayerPrefs.SetInt("key", 0);
+        
     }
 
     // Update is called once per frame
@@ -70,13 +71,13 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             anim.SetBool("isRunning", true);
-            speed = 15f;
+            speed = 9f;
         }
         // if I release shift I want to play the idle animation
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             anim.SetBool("isRunning", false);
-            speed = 10f;
+            speed = 6f;
         }
 
         if (Input.GetMouseButtonDown(0) && PlayerPrefs.GetInt("canShoot") == 1 )
@@ -154,10 +155,12 @@ public class Player : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("key"))
-        {   int key = PlayerPrefs.GetInt("key");
+        {
+            Destroy(other.gameObject);
+            int key = PlayerPrefs.GetInt("key");
             key++;
             PlayerPrefs.SetInt("key", key);
-            Destroy(other.gameObject);
+            
 
         }
         else if (other.gameObject.CompareTag("chest"))

@@ -10,6 +10,7 @@ public class Manager : MonoBehaviour
     //get tmpro
     public TextMeshProUGUI key;
     public TextMeshProUGUI hp;
+    public TextMeshProUGUI headShot;
     GameObject player;
 
     public GameObject cam1;
@@ -25,6 +26,8 @@ public class Manager : MonoBehaviour
         cam2.SetActive(false);
 
         PlayerPrefs.SetInt("canShoot", 0);
+
+        PlayerPrefs.SetInt("headShot", 0);
     }
 
     // Update is called once per frame
@@ -32,6 +35,7 @@ public class Manager : MonoBehaviour
     {
         key.text = PlayerPrefs.GetInt("key").ToString() + "/3";
 
+        headShot.text = PlayerPrefs.GetInt("headShot").ToString();
         
         hp.text = player.GetComponent<Player>().hp.ToString();
 
@@ -62,5 +66,6 @@ public class Manager : MonoBehaviour
     private void OnDestroy()
     {
         PlayerPrefs.SetInt("key", 0);
+        PlayerPrefs.SetInt("headShot", 0);
     }
 }
